@@ -6,7 +6,7 @@
 clc; clear; close all;
 
 % Το ονομα του αρχειου που θα ανοιξουμε
-filename='dataset3D.csv';
+filename='dataset2D.csv';
 
 % Φτιαχνουμε εναν πινακα Table με το
 % filename = 'dataset2D.csv'
@@ -19,7 +19,7 @@ Table = Table(randperm(size(Table,1)),:);
 
 % Εποχες = epoch (κυκλοι της μαθησης)
 % Μεγιστος κυκλος εποχων = max_epoch
-cur_epoch=0;max_epoch=20;
+cur_epoch=0;max_epoch=10;
 
 %   Διαστασεις του πινακα
 Dimentions=size(Table,2)-1;
@@ -35,10 +35,10 @@ if Dimentions==2
     
     % Εδω φτιαχνω ενα διανυσμα που μεσα θα εχει 1 σαν τιμη για να βαλω
     % μεσα την κλαση 1 ή -1 .
-    y_class=ones(size(Table(:,3)));
+    y_class = ones(length(y_cell),1); 
     
-    for i = 1 : size(y_cell)
-        if (strcmp(y_cell(i),'C1'))
+    for i = 1:length(y_cell)
+        if strcmp(y_cell{i}, 'C1')
             y_class(i) = 1;
         else
             y_class(i) = -1;
@@ -112,31 +112,30 @@ end
 
 % Αλλιως αν ειναι 3 θα ειναι ενα 3D 
 if Dimentions==3
+    cur_epoch = 0;
     % Βαζει στο x πινακα τις τιμες της δευτερης και της τριτης στιλης του
     % πινακα Table
     % Μετατρεπω τους πινακες σε διανυσματα 
     x_table = table2array(Table(:,1:3));
     y_cell = table2cell(Table(:,4));
     
-    up = ones(100,3);
-    down = ones(100,3);
+    up = [];
+    down = [];
     
     for i = 1 : size(y_cell)
-        if (strcmp(y_cell(i),'C1'))
-            y_class(i) = 1;
-            up(i,:)=x_table(i,:);
+        if strcmp(y_cell{i}, 'C1')
+            up(end+1,:) = x_table(i,:);
         else
-            y_class(i) = -1;
-            down(i,:)=x_table(i,:);
+            down(end+1,:) = x_table(i,:);
         end
     end
     
     % Εδω φτιαχνω ενα διανυσμα που μεσα θα εχει 1 σαν τιμη για να βαλω
     % μεσα την κλαση 1 ή -1
-    y_class=ones(size(Table(:,4)));
+     y_class = ones(length(y_cell),1); 
     
-    for i = 1 : size(y_cell)
-        if (strcmp(y_cell(i),'C1'))
+    for i = 1:length(y_cell)
+        if strcmp(y_cell{i}, 'C1')
             y_class(i) = 1;
         else
             y_class(i) = -1;
@@ -224,5 +223,4 @@ if Dimentions==3
     pause;
     
 end
-% Καθαριζουμε μεταβλητες και command window
-clc; clear; close all;
+
